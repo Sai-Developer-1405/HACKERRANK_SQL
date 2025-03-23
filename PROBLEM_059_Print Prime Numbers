@@ -1,0 +1,2 @@
+WITH RECURSIVE numbers AS ( SELECT 2 AS num UNION ALL SELECT num + 1 FROM numbers WHERE num + 1 <= 1000 ), primes AS ( SELECT num FROM numbers WHERE NOT EXISTS ( SELECT 1 FROM numbers AS divisor WHERE divisor.num > 1 AND divisor.num < numbers.num AND numbers.num % divisor.num = 0 ) ) SELECT GROUP_CONCAT(num SEPARATOR '&') AS primes_list FROM primes;
+
