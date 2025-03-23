@@ -1,7 +1,10 @@
-Select S.NAME
-FROM STUDENTS S 
-JOIN FRIENDS F ON S.ID = F.ID
-JOIN PACKAGES P1 ON S.ID = P1.ID
-JOIN PACKAGES P2 ON F.FRIEND_ID = P2.ID
-WHERE P2.SALARY > P1.SALARY
-ORDER BY P2.SALARY;
+WITH mybf AS (
+    SELECT F.ID, S.name, P.Salary, F.Friend_ID 
+    FROM Friends AS F  
+    JOIN Packages AS P ON F.ID = P.ID
+    JOIN Students AS S ON F.ID = S.ID
+)
+SELECT e1.name 
+FROM mybf AS e1
+JOIN mybf AS e2 ON e1.Friend_id = e2.ID AND e1.salary < e2.salary
+ORDER BY e2.salary;
