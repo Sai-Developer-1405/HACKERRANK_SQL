@@ -2,4 +2,3 @@
 
 with cte as ( select a.*, b.name from submissions a left join hackers b on a.hacker_id=b.hacker_id )
 select submission_date,no_of_hackers,hacker_id,name from ( select submission_date, hacker_id, name, sum(case when no_of_submission= DATEDIFF(DAY, '2016-03-01', submission_date)+1 then 1 else 0 end) over(partition by submission_date) as no_of_hackers , row_number() over(partition by submission_date order by count_of_sub desc,hacker_id) as rnk from ( SELECT submission_date, hacker_id, name, COUNT(submission_date) OVER (PARTITION BY hacker_id order by submission_date) AS no_of_submission, count(distinct submission_id) as count_of_sub FROM cte group by submission_date,hacker_id,name ) sub ) a where rnk=1 order by submission_date
-
